@@ -88,13 +88,16 @@ end
 
 def main(input_file, output_file)
   input = read_input(input_file)
+  line = "#----------------------------------------------------------\n"
+  sections = input.split(line)
+
   provider_name, project_id, region, vpc_name, subnet_name, cidr = parse_input(input)
   
   provider_code = generate_provider_code(provider_name, project_id, region)
   vpc_code = generate_vpc_code(vpc_name, provider_name)
   subnet_code = generate_subnet_code(subnet_name,cidr,vpc_name,provider_name)
   
-  terraform_code = provider_code + vpc_code + subnet_code
+  terraform_code = line + sections[1] + line + provider_code + line + sections[3] + line + vpc_code + line + sections[5] + line +subnet_code
   write_output(output_file, terraform_code)
 end
 
